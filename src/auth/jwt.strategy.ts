@@ -14,8 +14,13 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  //JWT의 페이로드를 검증하는 메서드
+  //validate 메서드는 JWT의 페이로드를 검증하고, 해당 사용자 정보를 가져오는 데 사용
   async validate(payload: any) {
-    return this.userService.findUserByEmailAndPassword(payload.email, payload.sub);
+    // payload에서 사용자 정보를 추출하여 사용자 조회
+    const user = await this.userService.findUserByEmailAndPassword(payload.email, payload.sub);
+    if (!user) {
+      throw new Error('Unauthorized');
+    }
+    return user; // 인증된 사용자를 반환
   }
 }
