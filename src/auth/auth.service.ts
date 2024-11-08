@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/user/user.service';
 import { RedisService } from 'src/redis/redis.service';
+import { UserInfoResponseDto } from 'src/user/dto/UserResponseDto';
 
 @Injectable()
 export class AuthService {
@@ -26,7 +27,13 @@ export class AuthService {
     // Redis에 리프레시 토큰 저장
     await this.redisService.set(`refresh_token:${user.id}`, refreshToken, 7 * 24 * 60 * 60);
 
+    const userInfo = new UserInfoResponseDto();
+    userInfo.id = user.email;
+    userInfo.email = user.email;
+    userInfo.name = user.name;
+
     return {
+      userInfo,
       accessToken,
       refreshToken,
     };
