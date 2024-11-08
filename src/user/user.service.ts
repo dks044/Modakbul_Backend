@@ -7,7 +7,7 @@ import * as bcrypt from 'bcrypt';
 export class UserService {
   constructor(private readonly prisma: PrismaService) {}
 
-  //회원가입
+  //회원가입용
   async create(email: string, name: string, password: string): Promise<User> {
     const hashedPassword = await bcrypt.hash(password, 10);
     return this.prisma.user.create({
