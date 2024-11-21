@@ -36,4 +36,9 @@ export class AuthController {
   async sendcode(@Body() body: { email: string }) {
     return await this.authService.sendCode(body.email);
   }
+
+  @Post('verifycode')
+  async verifyCode(@Body() body: { email: string; emailCode: string }) {
+    return await this.authService.verifyCode(body.email, body.emailCode);
+  }
 }

@@ -58,8 +58,22 @@ export class AuthService {
   }
 
   async sendCode(email: string) {
+    const existEmailCode = this.redisService.get(email);
+    if (existEmailCode) {
+      throw new Error('Exist Email code!');
+    }
+
     const code = randomCode(6);
     await this.mailService.sendEmail(email, code);
     await this.redisService.set(email, code, 3 * 60);
+    return 'Send Email Code Success';
+  }
+
+  async verifyCode(email: string, inputEmailCode: string) {
+    const vertifyEmailCode = await this.redisService.get(email);
+    if (inputEmailCode !== vertifyEmailCode) {
+      throw new Error('Not Vertif Email code!');
+    }
+    return 'Email code verified successfully';
   }
 }
