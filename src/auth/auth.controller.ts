@@ -31,4 +31,9 @@ export class AuthController {
   async refresh(@Body() body: { refreshToken: string }) {
     return await this.authService.refresh(body.refreshToken);
   }
+
+  @Post('sendcode')
+  async sendcode(@Body() body: { email: string }) {
+    return await this.authService.sendCode(body.email);
+  }
 }

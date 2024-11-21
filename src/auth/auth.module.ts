@@ -6,6 +6,7 @@ import { AuthService } from './auth.service';
 import { JwtStrategy } from './jwt.strategy';
 import { RedisService } from 'src/redis/redis.service';
 import { AuthController } from './auth.controller';
+import { MailService } from 'src/mail/mail.service';
 
 @Module({
   imports: [
@@ -14,7 +15,7 @@ import { AuthController } from './auth.controller';
       signOptions: { expiresIn: '30m' }, // 액세스 토큰 만료 시간
     }),
   ],
-  providers: [UserService, AuthService, JwtStrategy, PrismaService, RedisService],
+  providers: [UserService, AuthService, JwtStrategy, PrismaService, RedisService, MailService],
   controllers: [AuthController],
 })
 export class AuthModule {}

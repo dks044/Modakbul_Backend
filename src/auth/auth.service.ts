@@ -3,6 +3,8 @@ import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/user/user.service';
 import { RedisService } from 'src/redis/redis.service';
 import { UserInfoResponseDto } from 'src/user/dto/UserResponseDto';
+import { MailService } from 'src/mail/mail.service';
+import { randomCode } from 'src/constant';
 
 @Injectable()
 export class AuthService {
@@ -10,6 +12,7 @@ export class AuthService {
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
     private readonly redisService: RedisService,
+    private readonly mailService: MailService,
   ) {}
 
   async login(email: string, password: string) {
@@ -52,5 +55,11 @@ export class AuthService {
 
     const accessToken = this.jwtService.sign({ email: payload.email, sub: userId });
     return { accessToken };
+  }
+
+  async sendCode(email: string) {
+    const code = randomCode(6);
+    await this.mailService.sendEmail(email, code);
+    await this.redisService.set(email, code, 3 * 60);
   }
 }
