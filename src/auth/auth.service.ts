@@ -31,12 +31,14 @@ export class AuthService {
     await this.redisService.set(`refresh_token:${user.id}`, refreshToken, 7 * 24 * 60 * 60);
 
     const userInfo = new UserInfoResponseDto();
-    userInfo.id = user.email;
+    userInfo.id = user.id;
     userInfo.email = user.email;
     userInfo.name = user.name;
 
     return {
-      userInfo,
+      id: userInfo.id,
+      email: userInfo.email,
+      name: userInfo.name,
       accessToken,
       refreshToken,
     };
@@ -58,13 +60,14 @@ export class AuthService {
   }
 
   async sendCode(email: string) {
-    const existEmailCode = this.redisService.get(email);
+    const existEmailCode = await this.redisService.get(email);
     if (existEmailCode) {
       throw new Error('Exist Email code!');
     }
 
     const code = randomCode(6);
     await this.mailService.sendEmail(email, code);
+
     await this.redisService.set(email, code, 3 * 60);
     return 'Send Email Code Success';
   }
