@@ -10,7 +10,7 @@ export class MailService {
     await this.mailerService
       .sendMail({
         to: email,
-        subject: '[SnapNow] 회원님의 인증번호 입니다.',
+        subject: '[MODAKBUL] 회원님의 인증번호 입니다.',
         text: emailCode,
       })
       .then(response => {

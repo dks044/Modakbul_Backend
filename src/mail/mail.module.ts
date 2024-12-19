@@ -15,7 +15,7 @@ import { MailService } from './mail.service';
         },
       },
       defaults: {
-        from: `"SnapNow" <${process.env.GMAIL_USER}>`,
+        from: `"MODAKBUL" <${process.env.GMAIL_USER}>`,
       },
     }),
   ],
