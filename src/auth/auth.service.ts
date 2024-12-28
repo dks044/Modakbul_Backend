@@ -65,7 +65,7 @@ export class AuthService {
       throw new Error('Exist Email code!');
     }
 
-    const code = randomCode(6);
+    const code = randomCode(4);
     await this.mailService.sendEmail(email, code);
 
     await this.redisService.set(email, code, 3 * 60);
